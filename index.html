@@ -152,8 +152,8 @@
     // Pipes
     let pipes = [];
     const pipeWidth = 60;
-    const pipeGap = 130;
-    const pipeDistance = 200;
+    const pipeGap = 200;
+    const pipeDistance = 240;
 
     // Initialize pipes
     function initPipes() {
@@ -277,7 +277,7 @@
 
     function updatePipes() {
       pipes.forEach(pipe => {
-        pipe.x -= 2.5;
+        pipe.x -= 1.5;
 
         // Scoring
         if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
@@ -328,6 +328,8 @@
       if (gameRunning) {
         updateBird();
         updatePipes();
+        // Slow down pipe movement for easier gameplay
+        // Extra update removed to make pipes move slower
       }
 
       drawPipes();
