@@ -269,9 +269,12 @@
       bird.velocity += bird.gravity;
       bird.y += bird.velocity;
 
-      // Check collision with ground/ceiling
-      if (bird.y - bird.width / 2 > canvas.height || bird.y + bird.width / 2 < 0) {
-        endGame();
+      // Wrap bird around screen instead of dying
+      if (bird.y - bird.width / 2 > canvas.height) {
+        bird.y = -bird.width / 2;
+      }
+      if (bird.y + bird.width / 2 < 0) {
+        bird.y = canvas.height + bird.width / 2;
       }
     }
 
@@ -284,15 +287,6 @@
           pipe.scored = true;
           score++;
           document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
-        }
-
-        // Check collision
-        if (
-          bird.x - bird.width / 2 < pipe.x + pipeWidth &&
-          bird.x + bird.width / 2 > pipe.x &&
-          (bird.y - bird.width / 2 < pipe.topHeight || bird.y + bird.width / 2 > pipe.topHeight + pipeGap)
-        ) {
-          endGame();
         }
       });
 
