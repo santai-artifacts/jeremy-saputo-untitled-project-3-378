@@ -202,8 +202,17 @@
     }
 
     function drawBird() {
-      // Draw bird body
-      ctx.fillStyle = bird.color;
+      // Draw rainbow bird body
+      const gradient = ctx.createLinearGradient(bird.x - bird.width / 2, bird.y, bird.x + bird.width / 2, bird.y);
+      gradient.addColorStop(0, '#FF0000');
+      gradient.addColorStop(0.17, '#FF7F00');
+      gradient.addColorStop(0.33, '#FFFF00');
+      gradient.addColorStop(0.5, '#00FF00');
+      gradient.addColorStop(0.67, '#0000FF');
+      gradient.addColorStop(0.83, '#4B0082');
+      gradient.addColorStop(1, '#9400D3');
+
+      ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.arc(bird.x, bird.y, bird.width / 2, 0, Math.PI * 2);
       ctx.fill();
@@ -219,8 +228,11 @@
       ctx.arc(bird.x + 9, bird.y - 5, 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw beak
-      ctx.fillStyle = '#FF8C00';
+      // Draw rainbow beak
+      const beakGradient = ctx.createLinearGradient(bird.x + 12, bird.y - 2, bird.x + 20, bird.y);
+      beakGradient.addColorStop(0, '#FF00FF');
+      beakGradient.addColorStop(1, '#00FFFF');
+      ctx.fillStyle = beakGradient;
       ctx.beginPath();
       ctx.moveTo(bird.x + 12, bird.y - 2);
       ctx.lineTo(bird.x + 20, bird.y);
