@@ -133,7 +133,8 @@
     canvas.height = window.innerHeight;
 
     // Game variables
-    let gameRunning = true;
+    let gameRunning = false;
+    let gameStarted = false;
     let score = 0;
     let bestScore = localStorage.getItem('flappyBirdBest') ? parseInt(localStorage.getItem('flappyBirdBest')) : 0;
 
@@ -152,8 +153,8 @@
     // Pipes
     let pipes = [];
     const pipeWidth = 60;
-    const pipeGap = 200;
-    const pipeDistance = 240;
+    const pipeGap = 130;
+    const pipeDistance = 200;
 
     // Initialize pipes
     function initPipes() {
@@ -171,26 +172,38 @@
 
     // Event listeners
     document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' && gameRunning) {
+      if (e.code === 'Space') {
         e.preventDefault();
-        bird.velocity = bird.jump;
+        if (!gameStarted) {
+          gameStarted = true;
+          gameRunning = true;
+        } else if (gameRunning) {
+          bird.velocity = bird.jump;
+        }
       }
     });
 
     canvas.addEventListener('click', () => {
-      if (gameRunning) {
+      if (!gameStarted) {
+        gameStarted = true;
+        gameRunning = true;
+      } else if (gameRunning) {
         bird.velocity = bird.jump;
       }
     });
 
     document.addEventListener('touchstart', () => {
-      if (gameRunning) {
+      if (!gameStarted) {
+        gameStarted = true;
+        gameRunning = true;
+      } else if (gameRunning) {
         bird.velocity = bird.jump;
       }
     });
 
     function restartGame() {
-      gameRunning = true;
+      gameRunning = false;
+      gameStarted = false;
       score = 0;
       bird.y = canvas.height / 2;
       bird.velocity = 0;
@@ -269,24 +282,30 @@
       bird.velocity += bird.gravity;
       bird.y += bird.velocity;
 
-      // Wrap bird around screen instead of dying
-      if (bird.y - bird.width / 2 > canvas.height) {
-        bird.y = -bird.width / 2;
-      }
-      if (bird.y + bird.width / 2 < 0) {
-        bird.y = canvas.height + bird.width / 2;
+      // Check collision with ground/ceiling
+      if (bird.y - bird.width / 2 > canvas.height || bird.y + bird.width / 2 < 0) {
+        endGame();
       }
     }
 
     function updatePipes() {
       pipes.forEach(pipe => {
-        pipe.x -= 1.5;
+        pipe.x -= 2.5;
 
         // Scoring
         if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
           pipe.scored = true;
           score++;
           document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+        }
+
+        // Check collision
+        if (
+          bird.x - bird.width / 2 < pipe.x + pipeWidth &&
+          bird.x + bird.width / 2 > pipe.x &&
+          (bird.y - bird.width / 2 < pipe.topHeight || bird.y + bird.width / 2 > pipe.topHeight + pipeGap)
+        ) {
+          endGame();
         }
       });
 
@@ -322,8 +341,6 @@
       if (gameRunning) {
         updateBird();
         updatePipes();
-        // Slow down pipe movement for easier gameplay
-        // Extra update removed to make pipes move slower
       }
 
       drawPipes();
