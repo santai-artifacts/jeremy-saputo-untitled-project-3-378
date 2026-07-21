@@ -215,41 +215,71 @@
     }
 
     function drawBird() {
-      // Draw rainbow bird body
-      const gradient = ctx.createLinearGradient(bird.x - bird.width / 2, bird.y, bird.x + bird.width / 2, bird.y);
-      gradient.addColorStop(0, '#FF0000');
-      gradient.addColorStop(0.17, '#FF7F00');
-      gradient.addColorStop(0.33, '#FFFF00');
-      gradient.addColorStop(0.5, '#00FF00');
-      gradient.addColorStop(0.67, '#0000FF');
-      gradient.addColorStop(0.83, '#4B0082');
-      gradient.addColorStop(1, '#9400D3');
-
-      ctx.fillStyle = gradient;
+      // Draw parrot body (green)
+      ctx.fillStyle = '#22AA22';
       ctx.beginPath();
-      ctx.arc(bird.x, bird.y, bird.width / 2, 0, Math.PI * 2);
+      ctx.ellipse(bird.x - 2, bird.y, bird.width / 2, bird.height / 2, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw eye
+      // Draw parrot wing (darker green)
+      ctx.fillStyle = '#1a7a1a';
+      ctx.beginPath();
+      ctx.ellipse(bird.x - 6, bird.y + 2, bird.width / 3, bird.height / 3, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw parrot head (red)
+      ctx.fillStyle = '#FF4444';
+      ctx.beginPath();
+      ctx.arc(bird.x + 8, bird.y - 4, bird.width / 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw yellow stripe on head
+      ctx.fillStyle = '#FFDD00';
+      ctx.beginPath();
+      ctx.arc(bird.x + 8, bird.y - 2, bird.width / 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw eye white
       ctx.fillStyle = 'white';
       ctx.beginPath();
-      ctx.arc(bird.x + 8, bird.y - 5, 4, 0, Math.PI * 2);
+      ctx.arc(bird.x + 11, bird.y - 6, 3, 0, Math.PI * 2);
       ctx.fill();
 
+      // Draw eye pupil
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.arc(bird.x + 9, bird.y - 5, 2, 0, Math.PI * 2);
+      ctx.arc(bird.x + 12, bird.y - 6, 1.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw rainbow beak
-      const beakGradient = ctx.createLinearGradient(bird.x + 12, bird.y - 2, bird.x + 20, bird.y);
-      beakGradient.addColorStop(0, '#FF00FF');
-      beakGradient.addColorStop(1, '#00FFFF');
-      ctx.fillStyle = beakGradient;
+      // Draw curved beak (orange/yellow)
+      ctx.strokeStyle = '#FF8800';
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.moveTo(bird.x + 12, bird.y - 2);
-      ctx.lineTo(bird.x + 20, bird.y);
-      ctx.lineTo(bird.x + 12, bird.y + 2);
+      ctx.arc(bird.x + 14, bird.y - 4, 4, Math.PI * 0.7, Math.PI * 0.2, true);
+      ctx.stroke();
+
+      // Draw beak point
+      ctx.fillStyle = '#FF8800';
+      ctx.beginPath();
+      ctx.moveTo(bird.x + 18, bird.y - 4);
+      ctx.lineTo(bird.x + 20, bird.y - 3);
+      ctx.lineTo(bird.x + 18.5, bird.y - 2.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw tail feathers (red)
+      ctx.fillStyle = '#CC2222';
+      ctx.beginPath();
+      ctx.moveTo(bird.x - 14, bird.y - 4);
+      ctx.lineTo(bird.x - 20, bird.y - 8);
+      ctx.lineTo(bird.x - 18, bird.y - 4);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(bird.x - 14, bird.y + 4);
+      ctx.lineTo(bird.x - 20, bird.y + 8);
+      ctx.lineTo(bird.x - 18, bird.y + 4);
       ctx.closePath();
       ctx.fill();
     }
